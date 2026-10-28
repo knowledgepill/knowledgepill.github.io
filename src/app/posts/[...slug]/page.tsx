@@ -4,10 +4,17 @@ import {getAllPosts, getPostBySlug} from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
 import {PostBody} from "@/app/_components/post-body";
 import {PostHeader} from "@/app/_components/post-header";
+import PreviewAlert from "@/app/_components/preview-alert";
+
+type Params = {
+  params: Promise<{
+    slug: string[];
+  }>;
+};
 
 export default async function Post(props: Params) {
   const params = await props.params;
-  const post = getPostBySlug(params.slug);
+  const post = getPostBySlug(params.slug.join("/"));
 
   if (!post) {
     return notFound();
@@ -16,8 +23,8 @@ export default async function Post(props: Params) {
   const content = await markdownToHtml(post.content || "");
 
   return (
-    <main>
-      {/*<Alert preview={post.preview} />*/}
+    <>
+      <PreviewAlert preview={post.preview} />
       <PostHeader
         title={post.title}
         coverImage={post.coverImage}
@@ -25,19 +32,13 @@ export default async function Post(props: Params) {
         author={post.author}
       />
       <PostBody content={content}/>
-    </main>
+    </>
   );
 }
 
-type Params = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
-
 export async function generateMetadata(props: Params): Promise<Metadata> {
   const params = await props.params;
-  const post = getPostBySlug(params.slug);
+  const post = getPostBySlug(params.slug.join("/"));
 
   if (!post) {
     return notFound();
@@ -49,7 +50,7 @@ export async function generateMetadata(props: Params): Promise<Metadata> {
     title,
     openGraph: {
       title,
-      images: [post.ogImage.url],
+      images: [post.ogImage?.url],
     },
   };
 }
@@ -57,7 +58,8 @@ export async function generateMetadata(props: Params): Promise<Metadata> {
 export async function generateStaticParams() {
   const posts = getAllPosts();
 
-  return posts.map((post) => ({
-    slug: post.slug,
+  return posts
+    .map((post) => ({
+    slug: [...post.slug.split("/")],
   }));
 }

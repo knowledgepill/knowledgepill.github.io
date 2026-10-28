@@ -1,16 +1,27 @@
-import markdownStyles from "./markdown-styles.module.css";
+"use client"
+
+import {useEffect} from 'react'
+import Prism from 'prismjs'
+import loadLanguages from "prismjs/components/index"
 
 type Props = {
   content: string;
 };
 
-export function PostBody({ content }: Props) {
+function Markdown({html}: { html: string }) {
+  return (<div className="markdown" dangerouslySetInnerHTML={{__html: html}}/>);
+}
+
+export function PostBody({content}: Props) {
+
+  useEffect(() => {
+    loadLanguages(['java']);
+    Prism.highlightAll()
+  }, [])
+
   return (
-    <div className="max-w-4xl">
-      <div
-        className={markdownStyles["markdown"]}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+    <div className="max-w-6xl">
+      <Markdown html={content}/>
     </div>
   );
 }

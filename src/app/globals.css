@@ -1,3 +1,80 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "prismjs";
+
+
+h1 {
+    @apply my-18 text-5xl font-bold
+}
+
+h2 {
+    @apply my-6 text-2xl font-bold
+}
+
+
+.markdown {
+    @apply text-base font-normal
+}
+
+.markdown p {
+    @apply mb-6
+}
+
+.markdown ul {
+    @apply list-disc ml-8
+}
+
+.markdown ol {
+    @apply list-decimal ml-8
+}
+
+.markdown li {
+    @apply mb-6
+}
+
+.markdown h3 {
+    @apply mb-8 mt-18 text-3xl font-bold
+}
+
+.markdown h2 {
+    @apply mb-8 mt-18 text-4xl font-bold
+}
+
+.markdown h1 {
+    @apply mb-8 mt-18 text-5xl font-bold
+}
+
+.markdown blockquote {
+    @apply block border-l-4 pl-4 font-normal my-8
+}
+
+.markdown code {
+    @apply inline-block bg-gray-100 px-1 rounded-md
+}
+
+.markdown pre[class*="language-"] {
+    @apply inline-block bg-gray-100 px-1 rounded-md w-full px-4 py-4 mb-8
+}
+
+.markdown code[class*="language-"] {
+    @apply bg-none text-sm
+}
+
+.markdown table {
+    @apply mb-8 w-full text-base text-left
+}
+
+.markdown table thead {
+    @apply text-base border-b
+}
+
+.markdown table tbody {
+    @apply border-b border-b-gray-500 text-sm
+}
+
+.markdown table tbody tr {
+    @apply border-b border-b-gray-200
+}
+
+.markdown table td, th {
+    @apply py-2
+}
