@@ -2,6 +2,12 @@
 title: Hibernate ORM 6.x/7.x at Scale – Research Plan
 slug: hibernate-orm-scale-research
 tags: ["hibernate", "orm", "jpa", "spring", "performance"]
+preview: true
+date: "2026-11-19T20:28:33.000Z"
+author:
+  name: Maciej Leśniak
+  picture: "/assets/blog/authors/maciek1.png"
+excerpt: "Research on Hibernate ORM in the context of Java application development at scale, focused on Hibernate 6.x/7.x only. Priority contexts: Spring integration and pure JPA usage. Goal is to collect high-quality knowledge about recurring problems, anti-patterns, and proven patterns/techniques with code samples, trade-offs and official references."
 ---
 # Hibernate ORM 6.x/7.x at Scale – Common Problems, Pitfalls and Patterns
 
