@@ -1,8 +1,8 @@
 import {HOME_OG_IMAGE_URL} from "@/lib/constants";
 import type {Metadata} from "next";
 
-import Container from "@/app/_components/container";
-import Header from "@/app/_components/header";
+import Container from "@/components/container";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: `Knowledge Pill Blog`,

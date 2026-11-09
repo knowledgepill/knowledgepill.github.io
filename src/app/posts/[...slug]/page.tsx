@@ -2,9 +2,9 @@ import {Metadata} from "next";
 import {notFound} from "next/navigation";
 import {getAllPosts, getPostBySlug} from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
-import {PostBody} from "@/app/_components/post-body";
-import {PostHeader} from "@/app/_components/post-header";
-import PreviewAlert from "@/app/_components/preview-alert";
+import {PostBody} from "@/components/post-body";
+import {PostHeader} from "@/components/post-header";
+import PreviewAlert from "@/components/preview-alert";
 
 type Params = {
   params: Promise<{

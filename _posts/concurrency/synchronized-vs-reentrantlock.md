@@ -75,22 +75,95 @@ Subtlety: `tryLock()` **does not honor** the fairness policy — a barging threa
 
 ## `tryLock`, timed and interruptible acquisition
 
-This is the biggest functional gap. With `synchronized` you can only *block* (a waiting thread can be interrupted while
-parked on monitor entry, per JLS §17.2.3, but you can't time-bound or test-and-acquire):
+This is the biggest functional gap comparing with `synchronized`, where you can only *block* (a waiting thread can be
+interrupted while parked on monitor entry, per JLS §17.2.3, but you can't time-bound or test-and-acquire).
 
-[//]: # (@formatter:off)
+Default way of using is a timeout-based fallback/degradation in services, avoiding unbounded waits at shutdown.
+
+Typical use cases:
+
+1. Blocking and uninterruptible
+
 ```java
-// ReentrantLock: three extra acquisition modes
-lock.lock();                // blocking, uninterruptible
-lock.lockInterruptibly();   // throws InterruptedException
+class BlockingUninterruptible {
+    private final ReentrantLock lock = new ReentrantLock();
+    // ...
 
-boolean got = lock.tryLock(500, TimeUnit.MILLISECONDS); // timed + interruptible
+    static void main() {
+        var example = new BlockingUninterruptible();
+        Runnable task = example::task;
+        new Thread(task).start();
+        new Thread(task).start();
+    }
+
+    public void task() {
+        lock.lock();  // block until condition holds
+        try {
+            // ... method body
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
 ```
-[//]: # (@formatter:on)
 
-Typical uses: timeout-based fallback/degradation in services, avoiding unbounded waits at shutdown (pair with
-`lockInterruptibly()` and an interrupt), or "take the fast path only if uncontended" patterns. Note the Javadoc: timed
-`tryLock` may return `false` spuriously — treat it as *at most* the given bound, not a guarantee of waiting that long.
+2. Blocking (just like `lock()`) but throws `InterruptedException` in another thread interrupts
+
+```java
+class BlockingInterruptible {
+    private final ReentrantLock lock = new ReentrantLock();
+    // ...
+
+    static void main() {
+        var example = new BlockingInterruptible();
+        Runnable task = example::task;
+        new Thread(task).start();
+        new Thread(task).start();
+    }
+
+    public void task() {
+        try {
+            lock.lockInterruptibly();
+            // ... method body
+        } catch (InterrupderException ex) {
+            // react when the other thread interrupts
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+3. Timed and interruptible lock
+
+```java
+class TimedInterruptible {
+    private final ReentrantLock lock = new ReentrantLock();
+    // ...
+
+    static void main() {
+        var example = new TimedInterruptible();
+        Runnable task = example::task;
+        new Thread(task).start();
+        new Thread(task).start();
+    }
+
+    public void task() {
+        try {
+            boolean got = lock.tryLock(500, TimeUnit.MILLISECONDS);
+            // ... method body
+        } catch (InterrupderException ex) {
+            // react when the other thread interrupts
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+> Note the Javadoc: timed `tryLock` may return `false` spuriously — treat it as *at most* the given bound, not a
+> guarantee of waiting that long.
 
 ## Condition variables vs `wait`/`notify`
 

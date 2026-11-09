@@ -1,8 +1,8 @@
 import {getAllPosts} from "@/lib/api";
 import Link from "next/link";
-import DateFormatter from "@/app/_components/date-formatter";
+import DateFormatter from "@/components/date-formatter";
 import {Post} from "@/interfaces/post";
-import {TagsList} from "@/app/_components/tags-list";
+import {TagsList} from "@/components/tags-list";
 
 export default async function PostsList() {
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Avatar from "./avatar";
 import CoverImage from "./cover-image";
 import DateFormatter from "./date-formatter";
-import {TagsList} from "@/app/_components/tags-list";
+import {TagsList} from "@/components/tags-list";
 
 type Props = {
   title: string;

@@ -1,6 +1,6 @@
-import Container from "@/app/_components/container";
-import {Intro} from "@/app/_components/intro";
-import {Stories} from "@/app/_components/stories";
+import Container from "@/components/container";
+import {Intro} from "@/components/intro";
+import {Stories} from "@/components/stories";
 import {getAllPosts} from "@/lib/api";
 import {dedup} from "@/lib/arrays";
 
